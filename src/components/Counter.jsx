@@ -2,49 +2,69 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
-  state = {
-    count: 0,
-    tags: ["tag1", "tag2", "tag3"]
-  };
-
-  // constructor() {
-  //   super();
-  //   console.log(this);
-  //   this.handleIncrement = this.handleIncrement.bind(this);
-  // }
-
   getBadgeClasses = () => {
+    const { counter } = this.props;
     let classes = "badge m-2 badge-";
-    classes += this.state.count === 0 ? "warning" : "primary";
+    classes += counter.value === 0 ? "warning" : "primary";
     return classes;
   };
 
   formatCount = () => {
-    const { count } = this.state;
-    return count === 0 ? "zero" : count;
+    const { counter } = this.props;
+    return counter.value === 0 ? "zero" : counter.value;
   };
 
-  handleIncrement = product => {
-    console.log(product);
-    this.setState({ count: this.state.count + 1 });
+  isDisabled = () => {
+    const { counter } = this.props;
+    return counter.value === 0 ? true : false;
   };
 
   render() {
+    const { onIncrement, onDecrement, onDelete, onReset, counter } = this.props;
     return (
-      <React.Fragment>
-        {/* //no final das contas o que renderiza essas tags html 
-            //(expressãojsx) é compliada usando React.createElement
-            */}
-        <span style={styles.font} className={this.getBadgeClasses()}>
+      <div className="row">
+        <span
+          style={styles.font}
+          className={this.getBadgeClasses() + " col-sm m-2"}
+        >
           {this.formatCount()}
         </span>
         <button
-          onClick={() => this.handleIncrement({ id: 1 })}
-          className="btn btn-secondary btn-sm"
+          onClick={() => {
+            onIncrement(counter);
+          }}
+          className="btn btn-secondary btn-sm  col-sm m-2"
         >
           +
         </button>
-      </React.Fragment>
+
+        <button
+          disabled={this.isDisabled()}
+          onClick={() => {
+            onDecrement(counter);
+          }}
+          className="btn btn-secondary btn-sm col-sm m-2"
+        >
+          -
+        </button>
+
+        <button
+          onClick={() => {
+            onDelete(counter.id);
+          }}
+          className="btn btn-danger btn-sm col-sm m-2"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => {
+            onReset();
+          }}
+          className="btn btn-primary btn-sm col m-2"
+        >
+          Reset
+        </button>
+      </div>
     );
   }
 }

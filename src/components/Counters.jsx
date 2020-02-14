@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import Counter from "./Counter";
 class Counters extends Component {
-  state = {};
   render() {
-    var { counters } = this.props;
+    var { counters, onIncrement, onDecrement, onDelete, onReset } = this.props;
     return (
-      <div>
+      <div className="container w-50 m-2" style={styles.align}>
         {counters.map(counter => (
-          <Counter key={counter.id}></Counter>
+          <Counter
+            counter={counter}
+            key={counter.id}
+            onIncrement={onIncrement}
+            onDecrement={onDecrement}
+            onReset={onReset}
+            onDelete={onDelete}
+          ></Counter>
         ))}
       </div>
     );
@@ -15,3 +21,9 @@ class Counters extends Component {
 }
 
 export default Counters;
+
+const styles = {
+  align: {
+    display: "vertical"
+  }
+};
